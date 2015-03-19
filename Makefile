@@ -12,8 +12,10 @@ OBJS+=vnconv\byteio.o vnconv\charset.o vnconv\data.o vnconv\error.o vnconv\patte
 OBJS+=bkcachechooser.o vnconv\webviqrconv.o
 OBJS+=pspchm.o
 
-INCDIR =
-CFLAGS = -Imupdf/include -Idjvu/libdjvupsp -G0 -Wall -O2 -Ic:/pspsdk/psp/include/freetype2
+PS2SDK_FREETYPE=C:/Users/Giorgos/ps2sdk-ports/trunk/freetype-2.4.12
+
+INCDIR =$(PS2SDK_FREETYPE)/include
+CFLAGS = -Imupdf/include -Idjvu/libdjvupsp -G0 -Wall -O2 
 #CFLAGS += -g
 #BUILD_PRX=1
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
@@ -21,11 +23,11 @@ ASFLAGS = $(CFLAGS)
 
 LIBDIR =
 LDFLAGS =
-LIBS=-Lmupdf/libs -Ldjvu/libs -ldjvulibre -lmupdf -lraster -lworld -lfonts -lstream -lbase -lpspgum -lpspgu -lpsppower -lpsprtc -lpng -lz -ljpeg -lm -lfreetype -lstdc++ -lsupc++
+LIBS=$(PS2SDK_FREETYPE)/objs/libfreetype.a -Lmupdf/libs -Ldjvu/libs -ldjvulibre -lmupdf -lraster -lworld -lfonts -lstream -lbase -lpspgum -lpspgu -lpsppower -lpsprtc -lpng -lz -ljpeg -lm -lstdc++ -lsupc++
 
 
 EXTRA_TARGETS = EBOOT.PBP
-PSP_EBOOT_TITLE = Book Reader V8.1
+PSP_EBOOT_TITLE = Book Reader V8.2
 
 PSPSDK=$(shell psp-config --pspsdk-path)
 #USE_PSPSDK_LIBC=1

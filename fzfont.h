@@ -26,6 +26,8 @@
 
 #include "fztexture.h"
 
+int ISO_8859_7_CHARMAP(unsigned char byte);
+
 struct FZCharMetrics {
 	short x, y, width, height, xoffset, yoffset, xadvance;
 };
