@@ -1,0 +1,76 @@
+CXX=g++
+CC=gcc
+CLINK=g++
+WINDRES=
+CDEPS=g++ -MM
+DEPEX=*.c*
+OEX=o
+AR=ar
+ARFLAGS=r
+
+CXXFLAGS=-Imupdf/include -g3 -Wall -W -Wno-unused -O0 -pipe `freetype-config --cflags`
+CFLAGS=-Imupdf/include -g3 -Wall -W -Wno-unused -O0 -pipe `freetype-config --cflags`
+LDFLAGS=-g3 -Wall -W -Wno-unused -O0 -pipe
+LIBS=-Lmupdf/libs -Ldjvu/libs -lmupdf -ldjvulibre -lraster -lworld -lfonts -lstream -lbase -lfreetype -lz -lpng -ljpeg -lglut -lGL -L/usr/X11R6/lib -lGLU -lX11 -lXext -lm
+
+EXE=bookr.glut
+
+all: $(EXE)
+
+OBJS:=bkpdf.o bklayer.o bkdocument.o bkmainmenu.o bkfilechooser.o bklogo.o bkuser.o bookr.o bkbookmark.o bkpopup.o bkcolorchooser.o
+OBJS+=bkfancytext.o bkplaintext.o bkpalmdoc.o palmdoc/palm.o
+OBJS+=fzrefcount.o fzinstreammem.o fzinstreamstd.o fzimage.o fzimagepng.o fztexture.o fzfont.o fzscreenglut.o fzscreencommon.o
+OBJS+=tinystr.o tinyxmlerror.o tinyxml.o tinyxmlparser.o
+OBJS+=res_uifont.o res_txtfont.o res_uitex.o res_logo.o res_uitex2.o
+
+res_uifont.c: data/urwgothicb.pfb
+	bin2c $< temp res_uifont
+	sed s/static// temp > $@
+	rm -f temp
+
+res_txtfont.c: data/vera.ttf
+	bin2c $< temp res_txtfont
+	sed s/static// temp > $@
+	rm -f temp
+
+res_uitex.c: data/ui.png
+	bin2c $< temp res_uitex
+	sed s/static// temp > $@
+	rm -f temp
+
+res_uitex2.c: data/ui2.png
+	bin2c $< temp res_uitex2
+	sed s/static// temp > $@
+	rm -f temp
+
+res_logo.c: data/logo.png
+	bin2c $< temp res_logo
+	sed s/static// temp > $@
+	rm -f temp
+
+$(EXE): $(OBJS)
+	@(cd mupdf; make -f Makefile.glut)
+	$(CLINK) $(LDFLAGS) $(OBJS) $(LIBS) -o $@
+
+#%.a: $(OBJS)
+#	$(AR) $(ARFLAGS) $@ $(OBJS)
+
+%.$(OEX): %.cpp
+	$(CXX) $(CXXFLAGS) $< -c -o $@
+
+%.$(OEX): %.c
+	$(CC) $(CFLAGS) $< -c -o $@
+
+#%.$(OEX): %.asm
+#	$(NASM) $(NASMFLAGS) $< -o $@
+
+#%.$(OEX): %.rc
+#	$(WINDRES) $< -O coff -o $@
+
+clean:
+	rm -f  $(EXE)
+	rm -Rf *.o
+	rm -Rf palmdoc/*.o
+	rm -f gmon.out
+	@(cd mupdf; make -f Makefile.glut clean)
+
