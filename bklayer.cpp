@@ -518,13 +518,15 @@ void BKLayer::drawPopup(string& text, string& title, int bg1, int bg2, int fg) {
 	drawText((char*)text.c_str(), fontBig, 51, y + 35);
 }
 
-void BKLayer::drawClockAndBattery(string& extra) {
+void BKLayer::drawClockAndBattery(string& extra, bool reduced) {
 	texUI->bindForDisplay();
 	FZScreen::ambientColor(0xffbbbbbb);
 	drawImage(300, 226, BK_IMG_BATTERY_XSIZE, BK_IMG_BATTERY_YSIZE, BK_IMG_BATTERY_X, BK_IMG_BATTERY_Y);
 	drawImage(405, 222, BK_IMG_CLOCK_XSIZE, BK_IMG_CLOCK_YSIZE, BK_IMG_CLOCK_X, BK_IMG_CLOCK_Y);
 //	drawImage(292, 224, BK_IMG_MEMORY_XSIZE, BK_IMG_MEMORY_YSIZE, BK_IMG_MEMORY_X, BK_IMG_MEMORY_Y);
-	drawImage(237, 224, BK_IMG_MEMORY_XSIZE, BK_IMG_MEMORY_YSIZE, BK_IMG_MEMORY_X, BK_IMG_MEMORY_Y);
+	if (!reduced)
+		drawImage(237, 224, BK_IMG_MEMORY_XSIZE, BK_IMG_MEMORY_YSIZE, 
+									BK_IMG_MEMORY_X, BK_IMG_MEMORY_Y);
 	fontSmall->bindForDisplay();
 	FZScreen::ambientColor(0xffbbbbbb);
 	int ew = textW((char*)extra.c_str(), fontSmall);
@@ -546,9 +548,11 @@ void BKLayer::drawClockAndBattery(string& extra) {
 	snprintf(t4, 20, "%dMHz", speed);
 	drawText(t1, fontSmall, 425, 224);
 	drawText(t2, fontSmall, 320, 224);
-	drawText(t3, fontSmall, 260, 224);
+	if (!reduced)
+		drawText(t3, fontSmall, 260, 224);
 //	drawText(t4, fontSmall, 240, 224);
-	drawText(t4, fontSmall, 185, 224);
+	if (!reduced)
+		drawText(t4, fontSmall, 185, 224);
 }
 
 void BKLayer::menuCursorUpdate(unsigned int buttons, int max) {

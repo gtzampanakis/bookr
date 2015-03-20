@@ -742,6 +742,6 @@ void BKDocument::render() {
 		snprintf(tp, 256, "Page %d of %d", getCurrentPage(), getTotalPages());
 		t = tp;
 	}
-	drawClockAndBattery(t);
+	drawClockAndBattery(t, true);
 }
 
