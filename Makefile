@@ -12,7 +12,7 @@ OBJS+=vnconv\byteio.o vnconv\charset.o vnconv\data.o vnconv\error.o vnconv\patte
 OBJS+=bkcachechooser.o vnconv\webviqrconv.o
 OBJS+=pspchm.o
 
-PS2SDK_FREETYPE=C:/Users/Giorgos/ps2sdk-ports/trunk/freetype-2.4.12
+PS2SDK_FREETYPE=C:/Users/Giorgos/psp-ports/trunk/freetype-2.4.12
 
 INCDIR =$(PS2SDK_FREETYPE)/include
 CFLAGS = -Imupdf/include -Idjvu/libdjvupsp -G0 -Wall -O2 
