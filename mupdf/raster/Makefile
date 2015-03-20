@@ -8,7 +8,7 @@ ASFLAGS=$(CFLAGS)
 
 LIBDIR=
 LDFLAGS=
-LIBS=-lpspgu -lz -lm -lfreetype
+LIBS=-lpspgu -lz -lm 
 
 #EXTRA_TARGETS = EBOOT.PBP
 #PSP_EBOOT_TITLE = Bookr - Book Reader
