@@ -21,9 +21,9 @@ CFLAGS = -Imupdf/include -Idjvu/libdjvupsp -G0 -Wall -O2
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
 ASFLAGS = $(CFLAGS)
 
-LIBDIR =
+LIBDIR =-L$(PS2SDK_FREETYPE)/objs 
 LDFLAGS =
-LIBS=$(PS2SDK_FREETYPE)/objs/libfreetype.a -Lmupdf/libs -Ldjvu/libs -ldjvulibre -lmupdf -lraster -lworld -lfonts -lstream -lbase -lpspgum -lpspgu -lpsppower -lpsprtc -lpng -lz -ljpeg -lm -lstdc++ -lsupc++
+LIBS=-Lmupdf/libs -Ldjvu/libs -ldjvulibre -lmupdf -lraster -lworld -lfonts -lstream -lbase -lpspgum -lpspgu -lpsppower -lpsprtc -lpng -lz -ljpeg -lm -lstdc++ -lsupc++ -lfreetype
 
 
 EXTRA_TARGETS = EBOOT.PBP
