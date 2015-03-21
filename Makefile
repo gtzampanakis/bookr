@@ -2,7 +2,7 @@
 # cd mupdf; make
 PSP_EBOOT_ICON=data/icon0.png
 TARGET=bookr
-OBJS:=bkpdf.o bklayer.o bkdocument.o bkmainmenu.o bkfilechooser.o bkpagechooser.o bkcolorschememanager.o bklogo.o bkuser.o bookr.o bkbookmark.o bkpopup.o bkcolorchooser.o bkdjvu.o
+OBJS:=bkpdf.o bklayer.o bkdocument.o bkmainmenu.o bkfilechooser.o bkpagechooser.o bkcolorschememanager.o bklogo.o bkuser.o bookr.o bkbookmark.o bkpopup.o bkcolorchooser.o bkdjvu.o bklogging.o
 OBJS+=bkfancytext.o bkplaintext.o bkpalmdoc.o palmdoc/palm.o
 OBJS+=fzrefcount.o fzinstreammem.o fzinstreamstd.o fzimage.o fzimagepng.o fztexture.o fzfont.o fzscreenpsp.o fzscreencommon.o
 OBJS+=tinystr.o tinyxmlerror.o tinyxml.o tinyxmlparser.o bkmemcpy.o
@@ -12,10 +12,12 @@ OBJS+=vnconv\byteio.o vnconv\charset.o vnconv\data.o vnconv\error.o vnconv\patte
 OBJS+=bkcachechooser.o vnconv\webviqrconv.o
 OBJS+=pspchm.o
 
+DIST_DIR=dist
+
 PSP_FREETYPE=C:/Users/Giorgos/psp-ports/trunk/freetype
 
 INCDIR =$(PSP_FREETYPE)/include
-CFLAGS = -Imupdf/include -Idjvu/libdjvupsp -G0 -Wall -O2 
+CFLAGS = -Imupdf/include -Idjvu/libdjvupsp -G0 -O2
 #CFLAGS += -g
 #BUILD_PRX=1
 CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
@@ -63,3 +65,8 @@ sce: kxploit
 	rm -Rf __SCE__bookr%
 	mv bookr __SCE__bookr
 	mv bookr% %__SCE__bookr
+
+dist: all
+	mkdir -p $(DIST_DIR)
+	cp $(PSP_EBOOT) $(DIST_DIR)
+
