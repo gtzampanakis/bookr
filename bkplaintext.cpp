@@ -21,6 +21,7 @@
 #include <list>
 using namespace std;
 #include "bkplaintext.h"
+#include "bklogging.h"
 
 BKPlainText::BKPlainText() : buffer(0) { }
 BKPlainText::~BKPlainText() {
@@ -35,6 +36,7 @@ BKPlainText* BKPlainText::create(string& file) {
 
 	// read file to memory
 	FILE* f = fopen(file.c_str(), "r");
+	logDebug("Attempting to open file: %s", file.c_str());
 	if (f == NULL) {
 		delete r;
 		return NULL;
@@ -72,6 +74,8 @@ BKPlainText* BKPlainText::create(string& file) {
 	if (isHTML) {
 		r->buffer = BKFancyText::parseHTML(r, b, length);
 	} else {
+		/* parseText basically modifies "r", both by return value and inside
+		 * the function. */
 		r->buffer = BKFancyText::parseText(r, b, length);
 	}
 
