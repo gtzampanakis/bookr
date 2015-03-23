@@ -16,11 +16,11 @@ DIST_DIR=dist
 
 PSP_FREETYPE=C:/Users/Giorgos/psp-ports/trunk/freetype
 
-INCDIR =$(PSP_FREETYPE)/include
+INCDIR =$(PSP_FREETYPE)/include     utf8
 CFLAGS = -Imupdf/include -Idjvu/libdjvupsp -G0 -O2
 #CFLAGS += -g
 #BUILD_PRX=1
-CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti
+CXXFLAGS = $(CFLAGS) -fno-exceptions -fno-rtti -fexceptions
 ASFLAGS = $(CFLAGS)
 
 LIBDIR =-L$(PS2SDK_FREETYPE)/objs 
