@@ -420,6 +420,7 @@ void BKFancyText::resetFonts() {
 		useBuiltin = font == 0;
 	}
 	if (useBuiltin) {
+		BKUser::options.txtFont = "bookr:builtin";
 		font = FZFont::createFromMemory(res_txtfont, size_res_txtfont, BKUser::options.txtSize, false);
 	}
 	font->texEnv(FZ_TEX_MODULATE);
