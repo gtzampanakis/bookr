@@ -17,7 +17,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#include <stdio.h>
+#include <cstdio>
 #include <list>
 using namespace std;
 #include "utf8.h"
@@ -26,7 +26,7 @@ using namespace std;
 
 int MAX_FILE_SIZE_TO_LOAD = 4 * 1024 * 1024;
 
-char ISO_8859_7_INV_CHARMAP(uint32_t byte) {
+unsigned char ISO_8859_7_INV_CHARMAP(uint32_t byte) {
 	char result = -1;
 	switch(byte) {
 		case 0x0000:	result = 0x00; break;	//	NULL
@@ -582,11 +582,29 @@ BKPlainText* BKPlainText::create(string& file) {
 	uint32_t *endOf32BitData = 
 						utf8::unchecked::utf8to32(b, b + length, utf32TextData);
 
+
 	memset(b, '\0', length);
-	for (int i = 0; i < endOf32BitData - utf32TextData; i++) {
-		b[i] = ISO_8859_7_INV_CHARMAP(utf32TextData[i]);
+	int decodedLength = endOf32BitData - utf32TextData;
+	/* Change to ISO_8859_7 and also change any windows line endings to unix line endinds.
+	 * The change of line endings will make the options.txtWrapCR option work correctly.
+	 */
+	for (int i = 0, outIndex = 0; i < decodedLength; i++) {
+
+		unsigned char decoded = ISO_8859_7_INV_CHARMAP(utf32TextData[i]);
+
+		if (	   decoded == '\n' 
+				&& outIndex - 1 >= 0 
+				&& b[outIndex - 1] == '\r') {
+						b[outIndex - 1] = '\n';
+		}
+		else {
+			b[outIndex++] = decoded;
+		}
+
 	}
+
 	free(utf32TextData);
+	b = (char*) realloc(b, decodedLength);
 	logDebug("Done converting to ISO_8859_7");
 
 	bool isHTML = false;

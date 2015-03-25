@@ -20,6 +20,7 @@
 #include <list>
 using namespace std;
 #include "bkfancytext.h"
+#include "bklogging.h"
 
 BKFancyText::BKFancyText() : lines(0), nLines(0), topLine(0), maxY(0), font(0), rotation(0), runs(0), nRuns(0), holdScroll(false) {
 	lastFontSize = BKUser::options.txtSize;
@@ -342,13 +343,14 @@ char* BKFancyText::parseHTML(BKFancyText* r, char* in, int n) {
 }
 
 char* BKFancyText::parseText(BKFancyText* r, char* b, int length) {
+	logDebug("Starting BKFancyText::parseText with argument of length: %d", length);
 	// tokenize text file
 	list<BKRun> tempRuns;
 	int li = 0;
 	BKRun run;
 //	int lastbreak = 0;
 	for (int i = 0; i < length; ++i) {
-		if (b[i] == 10) {
+		if (b[i] == '\n') {
 			bool bBreak = true;
 			if( BKUser::options.txtWrapCR > 0 )
 			{
@@ -358,18 +360,17 @@ char* BKFancyText::parseText(BKFancyText* r, char* b, int length) {
 //					bBreak = false;
 //				} else
 //					lastbreak = i;
-				bBreak = true;
 				for( int j = 1 ; j <= BKUser::options.txtWrapCR+1 ; j++ )
 				{
-					if( i+j >= length || b[i+j] != 10 )
+					if( i+j >= length || b[i+j] != '\n' )
 						bBreak = false;
 				}
 				if( !bBreak )
 				{
 					for( int j = 1 ; j <= BKUser::options.txtWrapCR+1 ; j++ )
 					{
-						if( i+j < length && b[i+j] == 10 )
-							b[i+j] = 32;
+						if( i+j < length && b[i+j] == '\n' )
+							b[i+j] = ' ';
 					}
 				}
 			}

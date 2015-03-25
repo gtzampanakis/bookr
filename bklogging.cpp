@@ -25,11 +25,14 @@ FILE *BK_MAIN_LOG_FILE;
 char TIME_BUFF[80];
 
 void initLogging() {
+#ifdef LOGGING_ENABLED
 	BK_MAIN_LOG_FILE = fopen(MAIN_LOG_PATH, "a");
+#endif
 }
 
 void log(int level, char *fmt, va_list args) {
 
+#ifdef LOGGING_ENABLED
 	if (level > LOG_LEVEL_THRESHOLD) {
 
 		time_t currentTime;
@@ -51,15 +54,24 @@ void log(int level, char *fmt, va_list args) {
 		fflush(BK_MAIN_LOG_FILE);
 
 	}
+#endif
 }
 
 void logDebug(char *fmt, ...) {
-	va_list args;
-	va_start(args, fmt);
-	log(LOG_LEVEL_DEBUG, fmt, args);
-	va_end(args);
+
+#ifdef LOGGING_ENABLED
+	if (LOG_LEVEL_DEBUG < LOG_LEVEL_THRESHOLD) {
+		va_list args;
+		va_start(args, fmt);
+		log(LOG_LEVEL_DEBUG, fmt, args);
+		va_end(args);
+	}
+#endif
+
 }
 
 void finalizeLogging() {
+#ifdef LOGGING_ENABLED
 	fclose(BK_MAIN_LOG_FILE);
+#endif
 }
