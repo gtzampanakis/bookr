@@ -287,7 +287,7 @@ unsigned char ISO_8859_7_INV_CHARMAP(uint32_t byte) {
 	return result;
 }
 
-int ISO_8859_7_CHARMAP(unsigned char byte) {
+uint32_t ISO_8859_7_CHARMAP(unsigned char byte) {
 	int result = -1;
 	switch(byte) {
 		case 0x00:	result = 0x0000; break;	//	NULL

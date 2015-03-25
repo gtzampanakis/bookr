@@ -30,6 +30,7 @@ static void* memalign(int t, int s) {
 #endif
 
 #include "fzfont.h"
+#include "bkplaintext.h"
 
 FZFont::FZFont() : metrics(0) {
 }

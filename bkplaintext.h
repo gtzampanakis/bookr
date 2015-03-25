@@ -43,5 +43,8 @@ class BKPlainText : public BKFancyText {
 	static BKPlainText* create(string& file);
 };
 
+unsigned char ISO_8859_7_INV_CHARMAP(uint32_t byte);
+uint32_t ISO_8859_7_CHARMAP(unsigned char byte);
+
 #endif
 
