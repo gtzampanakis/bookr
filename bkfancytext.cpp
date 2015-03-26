@@ -101,8 +101,7 @@ void BKFancyText::reflow(int width) {
 	float spaceWidth = 0.0f;
 	BKRunsIterator rit(runs, 0, 0, nRuns);
 	BKRunsIterator lastSpace = rit;
-	FZCharMetrics* fontChars = font->getMetrics();
-	const int spaceWidthC = fontChars[32].xadvance;
+	const int spaceWidthC = font->getMetrics(32)->xadvance;
 	const float spaceWidthCF = float(spaceWidthC);
 
 	while (!rit.end()) {
@@ -139,7 +138,7 @@ void BKFancyText::reflow(int width) {
 			lastSpace = rit;
 			++lineSpaces;
 		}
-		currentWidth += fontChars[c].xadvance;
+		currentWidth += font->getMetrics(c)->xadvance;
 		rit.currentWidth = currentWidth;
 	}
 

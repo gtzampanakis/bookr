@@ -170,19 +170,17 @@ void BKLayer::drawRect(int x, int y, int w, int h, int r, int tx, int ty) {
 }
 
 int BKLayer::textWidthRange(char* t, int n, FZFont* font) {
-	FZCharMetrics* fontChars = font->getMetrics();
 	int baseX = 0;
 	for (unsigned char *p = (unsigned char*)t; *p != 0; p++) {
 		int idx = *p;
 		// printable & white space
 		if (idx >= 32)
-			baseX += fontChars[idx].xadvance;
+			baseX += font->getMetrics(idx)->xadvance;
 	}
 	return baseX;
 }
 
 int BKLayer::textW(char* t, FZFont* font) {
-	FZCharMetrics* fontChars = font->getMetrics();
 	// precalc vertex count
 	int vc = 0;
 	for (unsigned char *p = (unsigned char*)t; *p != 0; p++) {
@@ -202,12 +200,12 @@ int BKLayer::textW(char* t, FZFont* font) {
 		}
 		// white space
 		if (idx == 32) {
-			baseX += fontChars[idx].xadvance;
+			baseX += font->getMetrics(idx)->xadvance;
 			continue;
 		}
 		// printable
 		if (idx > 32) {
-			baseX += fontChars[idx].xadvance;
+			baseX += font->getMetrics(idx)->xadvance;
 			continue;
 		}
 	}
@@ -223,7 +221,6 @@ int BKLayer::drawText(char* t, FZFont* font, int x, int y, int n, bool useLF, bo
 	if (n < 0) {
 		n = strlen(t);
 	}
-	FZCharMetrics* fontChars = font->getMetrics();
 	// precalc vertex count
 	int vc = 0;
 	int i = 0;
@@ -256,7 +253,7 @@ int BKLayer::drawText(char* t, FZFont* font, int x, int y, int n, bool useLF, bo
 			if (usePS)
 				fx += ps;
 			else
-				baseX += fontChars[idx].xadvance;
+				baseX += font->getMetrics(idx)->xadvance;
 			continue;
 		}
 		// printable
@@ -265,23 +262,23 @@ int BKLayer::drawText(char* t, FZFont* font, int x, int y, int n, bool useLF, bo
 			int botright = topleft + 1;
 			int cx = usePS ? x + int(floor(fx)) : baseX;
 
-			FZCharMetrics fontChar = fontChars[idx];
+			FZCharMetrics *fontChar = font->getMetrics(idx);
 
-			vertices[topleft].u = fontChar.x;
-			vertices[topleft].v = fontChar.y;
-			vertices[topleft].x = cx + fontChar.xoffset;
-			vertices[topleft].y = baseY + fontChar.yoffset;
+			vertices[topleft].u = fontChar->x;
+			vertices[topleft].v = fontChar->y;
+			vertices[topleft].x = cx + fontChar->xoffset;
+			vertices[topleft].y = baseY + fontChar->yoffset;
 			vertices[topleft].z = 0;
 
-			vertices[botright].u = fontChar.x + fontChar.width;
-			vertices[botright].v = fontChar.y + fontChar.height;
-			vertices[botright].x = cx + fontChar.xoffset + fontChar.width;
-			vertices[botright].y = baseY + fontChar.yoffset + fontChar.height;
+			vertices[botright].u = fontChar->x + fontChar->width;
+			vertices[botright].v = fontChar->y + fontChar->height;
+			vertices[botright].x = cx + fontChar->xoffset + fontChar->width;
+			vertices[botright].y = baseY + fontChar->yoffset + fontChar->height;
 			vertices[botright].z = 0;
 
-			baseX += fontChar.xadvance;
+			baseX += fontChar->xadvance;
 			if (usePS)
-				fx += float(fontChar.xadvance);
+				fx += float(fontChar->xadvance);
 			iv+=2;
 			continue;
 		}
