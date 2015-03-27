@@ -34,7 +34,7 @@ struct FZCharMetrics {
 };
 
 /**
- * Represents a font.
+ * Holds a texture with rendered glyphs.
  */
 class FZFont : public FZTexture {
 
